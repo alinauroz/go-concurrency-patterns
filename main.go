@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/alinauroz/go-concurrency-patterns/confinement"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	confinement.Demo()
 }
