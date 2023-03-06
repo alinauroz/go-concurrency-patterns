@@ -9,6 +9,30 @@ In the following example, two functions are created.
 It can be noted in the following example that the data is provided by only the
 consumer function. No other part of code can modify the data source but they can
 ready from it.
+
+	|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+	|		chanOwner		 |------------------|
+	|________________________|					|
+												|
+												|
+												|
+												|
+												↓
+										|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+										|	  Channel      |←-----------|
+										|__________________|			|
+												|						|
+												|						|
+												|					 |‾‾‾‾‾|
+												|					 |	X  | Consumer can not write to channel
+	|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|					|					 |_____|
+	|		Consumer		 |←-----------------|						|
+	|________________________|											|
+				|														|
+				|														|
+				|_______________________________________________________|
+
+
 */
 
 package confinement
