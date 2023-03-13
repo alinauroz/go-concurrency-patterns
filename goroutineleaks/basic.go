@@ -9,6 +9,11 @@
 	Undoubtedly, goroutines are lightweight and do not require a significant amount of memory.
 	However, they still consume resources, and hence, it is not desirable for them to run indefinitely.
 
+	In the following example, a nil channel is passed to doWork. Receiving a value from a nil
+	channel is blocked forever. Therefore the goroutine will remain in memory until the process is
+	terminated. The lifespan of this process is short but in real world, processed can be long and
+	this leaked goroutine can create other goroutines.
+
 	Solution:
 	Goroutines are created by other goroutines. So there is always a parent goroutine, the main
 	goroutine. During their execution, goroutines communicate with other goroutines.
