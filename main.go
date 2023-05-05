@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	goroutineleaks.FixByChannel()
+	goroutineleaks.WriteDemo()
 }

@@ -22,10 +22,13 @@
 
 package goroutineleaks
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func Demo() {
-
+	// This code will cause go-routine leak
 	doWork := func(strings <-chan string) <-chan interface{} {
 		completed := make(chan interface{})
 
@@ -42,5 +45,29 @@ func Demo() {
 
 	doWork(nil)
 	fmt.Println("Done")
+
+}
+
+func WriteDemo() {
+
+	randStream := func() <-chan int {
+		stream := make(chan int)
+
+		go func() {
+			defer fmt.Println("Closed")
+			defer close(stream)
+			for {
+				stream <- rand.Int()
+			}
+		}()
+
+		return stream
+	}()
+
+	for i := 0; i < 3; i++ {
+		defer fmt.Println("Random value is", <-randStream)
+	}
+
+	fmt.Println("Main finished")
 
 }
