@@ -16,6 +16,7 @@ package goroutineleaks
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -52,5 +53,38 @@ func FixByChannel() {
 	// PART II
 	<-completed
 	fmt.Println("DONE")
+
+}
+
+func FixWriteLeakByChannel() {
+
+	getRandStream := func(done <-chan interface{}) <-chan int {
+		stream := make(chan int)
+
+		go func() {
+			defer fmt.Println("Closed")
+			defer close(stream)
+			for {
+				select {
+				case stream <- rand.Int():
+				case <-done:
+					return
+				}
+
+			}
+		}()
+
+		return stream
+	}
+
+	done := make(chan interface{})
+	randStream := getRandStream(done)
+
+	for i := 0; i < 3; i++ {
+		fmt.Println("Random value is", <-randStream)
+	}
+	close(done)
+
+	fmt.Println("Main finished")
 
 }
