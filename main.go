@@ -1,9 +1,7 @@
 package main
 
-import (
-	"github.com/alinauroz/go-concurrency-patterns/goroutineleaks"
-)
+import "github.com/alinauroz/go-concurrency-patterns/channel_types"
 
 func main() {
-	goroutineleaks.FixWriteLeakByChannel()
+	channel_types.OrDemo()
 }
