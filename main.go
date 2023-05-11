@@ -1,7 +1,9 @@
 package main
 
-import "github.com/alinauroz/go-concurrency-patterns/channel_types"
+import (
+	"github.com/alinauroz/go-concurrency-patterns/pipeline"
+)
 
 func main() {
-	channel_types.OrDemo()
+	pipeline.Idea()
 }
