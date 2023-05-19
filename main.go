@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	pipeline.Idea()
+	pipeline.PipelineWithGenerator()
 }
