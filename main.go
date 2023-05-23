@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/alinauroz/go-concurrency-patterns/pipeline"
+	"github.com/alinauroz/go-concurrency-patterns/generator"
 )
 
 func main() {
-	pipeline.PipelineWithGenerator()
+	generator.Demo()
 }
