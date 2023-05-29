@@ -1,6 +1,6 @@
 package generator
 
-func toInt(done <-chan interface{}, stream <-chan interface{}) <-chan int {
+func ToInt(done <-chan interface{}, stream <-chan interface{}) <-chan int {
 	outputStream := make(chan int)
 
 	go func() {

@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-func Repeat(stop <-chan interface{}, data []int) <-chan int {
-	stream := make(chan int)
+func Repeat(stop <-chan interface{}, data []int) <-chan interface{} {
+	stream := make(chan interface{})
 
 	go func() {
 		defer close(stream)
@@ -42,7 +42,7 @@ func RepeatDemo() {
 	fmt.Println("Generator stopped!")
 }
 
-func LimitedRepeat(done <-chan interface{}, stream <-chan int, limit int) <-chan interface{} {
+func LimitedRepeat(done <-chan interface{}, stream <-chan interface{}, limit int) <-chan interface{} {
 	limitedStream := make(chan interface{})
 
 	go func() {
