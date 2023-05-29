@@ -2,6 +2,7 @@ package pipeline
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/alinauroz/go-concurrency-patterns/generator"
 )
@@ -11,17 +12,33 @@ func getPrimeStream(done <-chan interface{}, inputStream <-chan int) <-chan int 
 
 	go func() {
 		defer close(outputStream)
-		for {
-			for v := range inputStream {
-				select {
-				case <-done:
-					return
-				case outputStream <- func() int {
-					return v
-				}():
+
+		for v := range inputStream {
+			select {
+			case <-done:
+				return
+			case outputStream <- func() int {
+				for i := v; i > 0; i-- {
+					for j := v - 1; j > 1; j-- {
+						if j == 2 {
+						}
+						if j == 2 && i%j != 0 {
+							return i
+						}
+						if i == j {
+							continue
+						}
+						if i%j == 0 {
+							break
+						}
+					}
+					continue
 				}
+				return 1
+			}():
 			}
 		}
+
 	}()
 
 	return outputStream
@@ -29,14 +46,17 @@ func getPrimeStream(done <-chan interface{}, inputStream <-chan int) <-chan int 
 
 func WithoutFanOutFanIn() {
 	done := make(chan interface{})
-	rand := func() interface{} {
-		return 100000
+	getRand := func() interface{} {
+		return rand.Intn(50000000)
 	}
-	randStream := generator.LimitedRepeat(done, generator.RepeatFunc(done, rand), 10)
+	randStream := generator.LimitedRepeat(done, generator.RepeatFunc(done, getRand), 10)
 	randIntStream := generator.ToInt(done, randStream)
 	primeStream := getPrimeStream(done, randIntStream)
 
 	for v := range primeStream {
 		fmt.Println(v)
 	}
+
+	close(done)
+	fmt.Println("Done")
 }
