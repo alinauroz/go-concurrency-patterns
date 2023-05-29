@@ -3,6 +3,7 @@ package pipeline
 import (
 	"fmt"
 	"math/rand"
+	"time"
 
 	"github.com/alinauroz/go-concurrency-patterns/generator"
 )
@@ -45,9 +46,10 @@ func getPrimeStream(done <-chan interface{}, inputStream <-chan int) <-chan int 
 }
 
 func WithoutFanOutFanIn() {
+	start := time.Now()
 	done := make(chan interface{})
 	getRand := func() interface{} {
-		return rand.Intn(50000000)
+		return rand.Intn(500000000)
 	}
 	randStream := generator.LimitedRepeat(done, generator.RepeatFunc(done, getRand), 10)
 	randIntStream := generator.ToInt(done, randStream)
@@ -58,5 +60,5 @@ func WithoutFanOutFanIn() {
 	}
 
 	close(done)
-	fmt.Println("Done")
+	fmt.Println("Done, it took", time.Since(start))
 }
