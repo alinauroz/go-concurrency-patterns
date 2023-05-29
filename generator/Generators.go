@@ -2,6 +2,7 @@ package generator
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -74,4 +75,39 @@ func LimitedRepeatDemo() {
 	}
 
 	fmt.Println("Generator stopped!")
+}
+
+func RepeatFunc(done <-chan interface{}, fn func() interface{}) <-chan interface{} {
+	stream := make(chan interface{})
+
+	go func() {
+		defer close(stream)
+		for {
+			select {
+			case <-done:
+				return
+			case stream <- fn():
+			}
+		}
+	}()
+
+	return stream
+}
+
+func RepeatFuncDemo() {
+	done := make(chan interface{})
+
+	go func() {
+		time.Sleep(1 * time.Second)
+		close(done)
+	}()
+
+	stream := RepeatFunc(done, func() interface{} {
+		return rand.Int()
+	})
+
+	for i := range stream {
+		fmt.Println(i)
+	}
+
 }

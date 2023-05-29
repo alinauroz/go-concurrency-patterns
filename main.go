@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	generator.LimitedRepeatDemo()
+	generator.RepeatFuncDemo()
 }
