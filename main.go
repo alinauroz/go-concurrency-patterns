@@ -6,4 +6,5 @@ import (
 
 func main() {
 	pipeline.WithoutFanOutFanIn()
+	pipeline.WithFanOutFanIn()
 }
