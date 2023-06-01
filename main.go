@@ -1,10 +1,9 @@
 package main
 
 import (
-	"github.com/alinauroz/go-concurrency-patterns/pipeline"
+	"github.com/alinauroz/go-concurrency-patterns/channel_types"
 )
 
 func main() {
-	pipeline.WithoutFanOutFanIn()
-	pipeline.WithFanOutFanIn()
+	channel_types.OrDoneDemo()
 }
