@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	channel_types.OrDoneDemo()
+	channel_types.TeeDemo()
 }

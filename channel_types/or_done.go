@@ -17,9 +17,7 @@ func OrDone(done <-chan interface{}, channel <-chan interface{}) <-chan interfac
 			case <-done:
 				return
 			case v, ok := <-channel:
-				time.Sleep(10 * time.Millisecond)
 				if ok == false {
-					fmt.Println("Returning...")
 					return
 				}
 
