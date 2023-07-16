@@ -45,12 +45,43 @@ func QueueDemo() {
 		return stream
 	}
 
+	buffer := func(done <-chan interface{}, inputStream <-chan interface{}, size int) <-chan interface{} {
+		stream := make(chan interface{}, size)
+
+		go func() {
+			defer close(stream)
+			for {
+				select {
+				case <-done:
+					return
+				case v, ok := <-inputStream:
+					if !ok {
+						return
+					}
+					stream <- v
+				}
+			}
+		}()
+
+		return stream
+	}
+
 	zeros := generator.LimitedRepeat(done, generator.Repeat(done, inp), 3)
 	short := sleep(done, 1, zeros, "Short Without Buffer")
 	long := sleep(done, 3, short, "Long Without Buffer")
 
 	for v := range long {
 		fmt.Println("Received value from Long wihtout buffer: ", v)
+	}
+
+	fmt.Println("\nPart II: Queue Demo With Buffer")
+	zeros = generator.LimitedRepeat(done, generator.Repeat(done, inp), 3)
+	short = sleep(done, 1, zeros, "Short With Buffer")
+	bufferedStream := buffer(done, short, 3)
+	long = sleep(done, 3, bufferedStream, "Long With Buffer")
+
+	for v := range long {
+		fmt.Println("Received value from Long: ", v)
 	}
 
 }
